@@ -1,0 +1,6 @@
+@media only screen and (min-width:1200px){.todo{width:600px;margin:auto}}body{background-image:url(/static/images/todo3.webp)!important;width:100%;background-repeat:none;background-attachment:scroll;background-position:center center;-webkit-background-size:cover;-moz-background-size:cover;-o-background-size:cover;background-size:cover}.todo{margin:auto}.all_todo{border:2px solid #000;margin-bottom:15px;padding-left:10px}
+@media (max-height: 1200px) {
+  body{
+    height: 100vh !important;
+  }
+}

@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    {% block head %}
+    {{ super() }}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Tasks{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/users/all_user_todo.css') }}">
+    {% endblock %}
+  </head>
+  <body>
+
+    {% block content %}
+
+
+      <div class="container center">
+        <div class="col-md-8">
+          <div class="card-hover-shadow-2x mb-3 card def">
+            <div class="card-header-tab card-header">
+              <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+                <i class="fa fa-tasks"></i>&nbsp;Task Lists
+              </div>
+            </div>
+            <div class="scroll-area-sm deff scrollmenu">
+              <perfect-scrollbar class="ps-show-limits">
+                <div class="ps ps--active-y">
+                  <div class="ps-content">
+
+                    <!-- LOOP FOR TOdo PER USER -->
+                    {% for post in todos.items %}
+                    <ul class=" list-group list-group-flush">
+
+                      <li class="list-group-item">
+                        <div class="todo-indicator bg-warning"></div>
+                        <div class="widget-content p-0">
+                          <div class="widget-content-wrapper defff">
+                            <div class="widget-content-left">
+                              <div class="widget-heading">{{post.text}}
+                              </div>
+                              <div class="widget-subheading"><i>
+                                <a href="{{url_for('users.user_todos',username=post.author.username)}}">{{post.author.username}}</a>
+                              </i>
+                              </div>
+                              <div class="widget-subheading">{{ post.date }}</div>
+                            </div>
+
+                          <div class="widget-content-right">
+                            <a href="{{url_for('todos.update_todo',todo_iid=post.id)}}">
+                              <button class="border-0 btn-transition btn btn-outline-success">
+                                <i class="fa fa-edit">
+                                </i>
+                              </button>
+                            </a>
+
+                            <a href="{{url_for('todos.todo',todo_id=post.id)}}">
+                              <button type="button" class="border-0 btn-transition btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalLong">
+                                <i class="fa fa-trash">
+                                </i>
+                              </button>
+                            </a>
+                          </div>
+
+                         </div>
+                        </div>
+                      </li>
+
+                    </ul>
+                    {% endfor %}
+                    <!-- END OF LOOP -->
+
+                  </div>
+                </div>
+              </perfect-scrollbar>
+            </div>
+
+            <!-- FOOTER OF FROM -->
+            <div class="d-block text-right card-footer">
+
+              <!-- BUTTON -->
+              <div class="">
+                <a href="{{url_for('core.index')}}"><button class="mr-2 btn btn-link btn-sm">Cancel</button></a>
+                <a href="{{url_for('todos.create_todo')}}"><button class="btn btn-primary">Add Task</button></a>
+              </div>
+              <!-- END OF BUTTON -->
+
+              <!-- START OF PAGINATION -->
+              <div class="pagination pag">
+                 <a href="{{ url_for('users.all_user_todos', username=user.username, page=todos.prev_num) }}" class="btn btn-outline-primary
+                    {% if todos.page == 1 %}disabled{% endif %}">&laquo;
+                 </a>
+
+                 {% for page_num in todos.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                     {% if page_num %}
+
+                         {% if todos.page == page_num %}
+                         <a class="btn btn-primary" href="{{ url_for('users.all_user_todos', username=user.username, page=page_num) }}">{{ page_num }}</a>
+                         {% else %}
+                         <a class="btn btn-outline-primary" href="{{ url_for('users.all_user_todos', username=user.username, page=page_num) }}">{{ page_num }}</a>
+                         {% endif %}
+
+                     {% else %}
+                         ...
+                     {% endif %}
+                 {% endfor %}
+
+                 <a href="{{ url_for('users.all_user_todos', username=user.username, page=todos.next_num) }}" class="btn btn-outline-primary
+                    {% if todos.page == todos.pages %}disabled{% endif %}">&raquo;
+                 </a>
+             </div>
+             <!-- END OF PAGINATION -->
+
+             <!-- PAGE NUMBER -->
+             <p class="text-center mt-8 pg">
+                Showing page {{ todos.page }} of {{ todos.pages }}
+             </p>
+             <!-- END -->
+
+            </div>
+            <!-- END OF FOOTER -->
+
+          </div>
+        </div>
+        </div>
+
+
+    {% endblock %}
+
+
+    {% block scripts %}
+    {{ super() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" charset="utf-8"></script>
+    {% endblock %}
+
+  </body>
+</html>

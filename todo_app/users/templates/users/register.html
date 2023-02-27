@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    {% block head %}
+    {{ super()}}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Register{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/users/register.css') }}">
+    {% endblock %}
+  </head>
+  <body>
+
+    {% block content %}
+    <div class="form_wrapper">
+
+      <div class="form_container">
+        <div class="title_container">
+          <h2>Registration Form</h2>
+        </div>
+        <div class="row clearfix">
+          <div class="">
+            <form method="POST">
+              {{ form.hidden_tag() }}
+              <div class="input_field"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
+                  <!-- {{ form.email.label() }} -->
+                  {% if form.email.errors %}
+                      {{ form.email(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                          {% for error in form.email.errors %}
+                              <span>{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                  {% else %}
+                      {{ form.email(placeholder="Email")}}
+                  {% endif %}
+              </div>
+
+              <div class="input_field"> <span><i aria-hidden="true" class="fa fa-user"></i></span>
+                  <!-- {{ form.username.label(class="form-control-label") }} -->
+
+                  {% if form.username.errors %}
+                      {{ form.username(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                          {% for error in form.username.errors %}
+                              <span>{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                  {% else %}
+                      {{ form.username(placeholder="username") }}
+                  {% endif %}
+              </div>
+
+              <div class="input_field"> <span><i aria-hidden="true" class="fa fa-lock"></i></span>
+                  <!-- {{ form.password.label() }} -->
+                  {% if form.password.errors %}
+                      {{ form.password(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                          {% for error in form.password.errors %}
+                              <span>{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                  {% else %}
+                      {{ form.password(placeholder="Password") }}
+                  {% endif %}
+              </div>
+
+              <div class="input_field"> <span><i aria-hidden="true" class="fa fa-lock"></i></span>
+                  <!-- {{ form.pass_confirm.label(class="form-control-label") }} -->
+                  {% if form.pass_confirm.errors %}
+                      {{ form.pass_confirm(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                          {% for error in pass_confirm.errors %}
+                              <span>{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                  {% else %}
+                      {{ form.pass_confirm(placeholder="Re-type Password") }}
+                  {% endif %}
+              </div>
+
+
+              <div class="row clearfix">
+                <div class="col_half">
+                  <div class="input_field"> <span><i aria-hidden="true" class="fa fa-user"></i></span>
+                      <!-- {{ form.first_name.label(class="form-control-label") }} -->
+                      {% if form.first_name.errors %}
+                          {{ form.first_name(class="form-control form-control-lg is-invalid") }}
+                          <div class="invalid-feedback">
+                              {% for error in form.first_name.errors %}
+                                  <span>{{ error }}</span>
+                              {% endfor %}
+                          </div>
+                      {% else %}
+                          {{ form.first_name(placeholder="First_Name") }}
+                      {% endif %}
+                  </div>
+                </div>
+                <div class="col_half">
+                  <div class="input_field"> <span><i aria-hidden="true" class="fa fa-user"></i></span>
+                      <!-- {{ form.last_name.label(class="form-control-label") }} -->
+                      {% if form.last_name.errors %}
+                          {{ form.last_name(class="form-control form-control-lg is-invalid") }}
+                          <div class="invalid-feedback">
+                              {% for error in form.last_name.errors %}
+                                  <span>{{ error }}</span>
+                              {% endfor %}
+                          </div>
+                      {% else %}
+                          {{ form.last_name(placeholder="Last_Name") }}
+                      {% endif %}
+                  </div>
+                </div>
+              </div>
+
+              <div class="">
+                <div class="input_field radio_option">
+                  {% if form.gender.errors %}
+                      {{ form.gender() }}
+                      <div class="invalid-feedback">
+                          {% for error in form.gender.errors %}
+                              <span>{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                  {% else %}
+                      {{ form.gender() }}
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="">
+                  {{ form.submit(class="button") }}
+              </div>
+
+            </form>
+            <div class="border-top pt-3">
+                <small class="text-muted">
+                    Already Have An Account? <a class="ml-1" href="{{ url_for('users.login') }}">Sign In</a>
+                </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    {% endblock %}
+
+
+    {% block scripts %}
+    {{ super() }}
+    <script src='https://use.fontawesome.com/4ecc3dbb0b.js'></script>
+    {% endblock %}
+
+
+  </body>
+</html>

@@ -1,0 +1,2 @@
+@media only screen and (min-width:1200px){.account{width:600px}}body{background-image:url(/static/images/todo7.webp)!important;height:100%;width:100%;background-repeat:none;background-attachment:scroll;background-position:center center;-webkit-background-size:cover;-moz-background-size:cover;-o-background-size:cover;background-size:cover}p{margin-bottom:0}.account{margin:auto}.but{display:flex}.butt{margin-left:20px}
+@media (min-height:500px){body{height:100vh!important}}

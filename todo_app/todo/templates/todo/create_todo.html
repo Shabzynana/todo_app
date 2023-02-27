@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    {% block head%}
+    {{ super() }}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/todo/create_todo.css') }}">
+    <title>{% block title %}Create Task{% endblock %}</title>
+    {% endblock%}
+  </head>
+  <body>
+
+    {% block content %}
+
+    <div class="container con">
+      <form method="POST" action="">
+
+        {{ form.hidden_tag() }}
+
+         <div class="form-group">
+         {{ form.text.label(class="form-control-label lab") }}
+         {{ form.text(class="form-control form-control-lg",placeholder="fill in task") }}
+         </div>
+         <div class="form-group">
+         {{ form.date.label(class="form-control-label lab") }}
+         {{ form.date(class="form-control form-control-lg") }}
+         </div>
+         <div class="form-group">
+         {{ form.submit(class="btn btn-dark") }}
+         </div>
+
+      </form>
+    </div>
+
+    {% endblock %}
+
+  </body>
+</html>

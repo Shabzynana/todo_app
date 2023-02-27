@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head %}
+    {{ super() }}
+
+    <style media="screen">
+    @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600,400italic);
+    @import url(http://fonts.googleapis.com/css?family=Oswald:300,400,700);
+    @import url(http://fonts.googleapis.com/css?family=PT+Sans+Narrow);
+    @media only screen and (min-height:550px){.main{height:100vh!important}}body{margin:0}.main{background-image:url(/static/images/todo6.webp)!important;text-align:center;color:#fff;background-attachment:scroll;background-position:center center;background-repeat:none;-webkit-background-size:cover;-moz-background-size:cover;-o-background-size:cover;background-size:cover}
+    .intro-text{position:relative;padding:30% 0 0 0}.main .intro-text h1{font-size:50px;font-weight:700;line-height:50px;letter-spacing:5px;margin-bottom:55px;-webkit-animation:bounceIn;-moz-animation:rubberBand;-o-animation:bounceIn;animation:bounceIn;-webkit-animation-duration:2s;-moz-animation-duration:2s;-o-animation-duration:2s;animation-duration:2s;font-family:'Oswald',sans-serif}.main .intro-text p{font-size:30px;font-weight:300;line-height:35px;letter-spacing:1px;margin-bottom:55px;-webkit-animation:bounceInLeft;-moz-animation:fadeInLeft;-o-animation:fadeInLeft;animation:bounceLeft;-webkit-animation-duration:2s;-moz-animation-duration:2s;-o-animation-duration:2s;animation-duration:2s}.main .intro-text h1 span{color:#28ABE3}
+    </style>
+    <title>{% block title %}Home{% endblock %}</title>
+    {% endblock %}
+  </head>
+  <body>
+    {% block content %}
+
+    <div class="main">
+      <div class="container">
+            <div class="intro-text">
+                <h1>Welcome To <span>Fenom</span></h1>
+                <p>Fenom is an app that helps you keep up</br> with your tasks.</p>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+
+  </body>
+</html>

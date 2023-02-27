@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    {% block head %}
+    {{ super() }}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Profile{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/users/user_todos.css') }}">
+    {% endblock %}
+  </head>
+  <body>
+
+    {% block content %}
+
+    <div class="todo">
+
+      <!-- <div class="container"> -->
+        <div class="jumbotron" style="margin-top:60px;">
+            <!-- CHANGE PROFILE PICTURE -->
+            <div class="picture" align="center">
+
+              <input type="image" src="{{url_for('static',filename='profile_pics/'+ user.profile_image)}}" data-target="#del_modal" data-toggle="modal" name="submit" width="100" height="100" alt="submit"/>
+              <br>
+
+              {% if form.picture.errors %}
+                  {% for error in form.picture.errors %}
+                      <span class="text-danger">{{ error }}</span></br>
+                  {% endfor %}
+              {% endif %}
+
+              <!-- MODAL POP-UP -->
+              <div class="modal" tabindex="-1" role="dialog" id="del_modal">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+
+                    <div class="modal-header">
+                      <h5 class="modal-title">Update Profile Picture</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+
+                    <div class="modal-body">
+                      <form  method="POST" action="" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            {{ form.picture.label(class="form-control-file") }}
+                            {{ form.picture(class="form-control-file") }}
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            {{ form.submit(class="btn btn-dark") }}
+                        </div>
+                      </form>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <!-- END OF MODAL -->
+
+            </div>
+            <!-- END OF CHANGE OF PICTURE -->
+
+          <div class="meee">
+            <p class="acc">Username: {{ user.username }}</p>
+            <p class="acc">Email: {{ user.email }}</p>
+            <p class="acc">FirstName: {{ user.first_name }}</p>
+            <p class="acc">LastName: {{ user.last_name }}</p>
+          </div>
+        </div>
+        <!-- END OF CONTAINER CLASS -->
+
+          <!-- LOOPS FOR ALL USER BLOG POST -->
+          {% for post in todos.items %}
+
+            <div class="all_todo">
+              Task By: <a href="{{url_for('users.user_todos',username=post.author.username)}}">{{post.author.username}}</a>
+              <p> Due Date: {{ post.date }} </p>
+              <p> Task: {{post.text}}</p>
+              <br>
+            </div>
+
+          {% endfor %}
+          <!-- END OF LOOP -->
+
+
+           <!-- PAGINATION FOR USERS -->
+
+            <div class="text-center">
+                <a href="{{ url_for('users.user_todos', username=user.username, page=todos.prev_num) }}" class="btn btn-outline-primary
+                   {% if todos.page == 1 %}disabled{% endif %}">Previous
+                </a>
+
+                <!-- Loop through the number of pages to display a link for each-->
+                {% for page_num in todos.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                    {% if page_num %}
+
+                        <!-- Check for the active page and set the link to "Active"-->
+                        {% if todos.page == page_num %}
+                        <a class="btn btn-primary" href="{{ url_for('users.user_todos', username=user.username, page=page_num) }}">{{ page_num }}</a>
+                        {% else %}
+                        <a class="btn btn-outline-primary" href="{{ url_for('users.user_todos', username=user.username, page=page_num) }}">{{ page_num }}</a>
+                        {% endif %}
+
+                    {% else %}
+                        ...
+                    {% endif %}
+                {% endfor %}
+
+                <a href="{{ url_for('users.user_todos', username=user.username, page=todos.next_num) }}" class="btn btn-outline-primary
+                   {% if todos.page == todos.pages %}disabled{% endif %}">Next
+                </a>
+            </div>
+
+            <!-- END OF PAGINATION FOR USERS -->
+
+            <p class="text-center mt-8">
+               Showing page {{ todos.page }} of {{ todos.pages }}
+            </p>
+
+    </div>
+
+    {% endblock %}
+
+  </body>
+</html>

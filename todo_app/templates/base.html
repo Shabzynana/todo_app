@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style media="screen">
+    @media only screen and (max-width:600px){.sec{margin-bottom:15px}}.navigation{background-color:#000}body{min-height:100vh;display:flex;flex-direction:column}footer{margin-top:auto;padding:25px 0;background:#111;border-top:2px solid #28ABE3}.copyright{text-transform:uppercase;text-transform:none;color:#999}.footer-social li{display:inline;padding:0 10px}.footer-social li a{padding:8px;color:#fff;background:#28ABE3}.footer-social li i{font-size:15px;width:20px;height:20px}.footer-social li:hover a{background:#fff;color:#666}.footer-link li{display:inline;padding-left:10px;font-size:13px}.btn:focus,.btn:active,.btn.active,.btn:active:focus{outline:0}.footer-social li{display:inline;padding:0 10px}.footer-social li a{padding:8px;color:#fff;-webkit-border-radius:2px;-moz-border-radius:2px;-o-border-radius:2px;border-radius:2px}.footer-social li i{font-size:15px;width:20px;height:20px}.footer-social li:hover a{background:#fff;color:#666}.footer-link li{display:inline;padding-left:10px;font-size:13px}.mid{margin: auto;}
+    </style>
+    <title>{% block title %}{% endblock %} - Fenom</title>
+    <link rel="shortcut icon" href="{{url_for('static',filename='images/logo.png.png')}}">
+    {% endblock %}
+  </head>
+  <body>
+
+    <section class="navigation">
+      <div class="container-fluid navBackground">
+        <nav class="navbar navbar-expand-lg navbar-dark scrolling-navbar sticky-top">
+          <a class="navbar-brand mr-4" href="{{ url_for('core.index') }}">Fenom</a>
+          <!-- <a class="navbar-brand" href="index.html"><img src="{{url_for('static',filename='images/logo.png.png')}}" alt="logo" style="width: 50px; height: auto;"></a> -->
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="{{ url_for('core.index') }}">Home</a>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+
+              {% if current_user.is_authenticated %}
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Todo
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{{ url_for('todos.create_todo') }}">Add Task</a>
+                  <a class="dropdown-item" href="{{ url_for('users.all_user_todos', username=current_user.username) }}">Tasks</a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Account
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{{ url_for('users.user_todos', username=current_user.username) }}">Profile</a>
+                  <a class="dropdown-item" href="{{ url_for('users.account') }}">Edit Profile</a>
+                </div>
+              </li>
+
+              <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+
+              {% else %}
+              <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+              <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+              {% endif %}
+
+            </div>
+
+          </div>
+        </nav>
+      </div>
+    </section>
+    
+    <div class="mid">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>    
+        
+
+    {% block content %}
+    {% endblock %}
+    
+
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-xs-12 sec">
+            <span class="copyright"> &copy; Fenom 2022. Designed by Shabzynana</span>
+          </div>
+          <div class="col-md-4 col-xs-12">
+            <div class="footer-social text-center">
+              <ul>
+                <li class="waves-effect"><a href="https://twitter.com/Shabzynana"><i class="fa fa-twitter"></i></a></li>
+                <li class="waves-effect"><a href="https://github.com/Shabzynana"><i class="fa fa-github"></i></a></li>
+                <li class="waves-effect"><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                <li class="waves-effect"><a href="https://www.instagram.com/shabzynana/"><i class="fa fa-instagram"></i></a></li>
+              </ul>  
+            </div>            
+          </div>                                             
+        </div>
+      </div>
+    </footer>
+
+
+    {% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    {% endblock %}
+  </body>
+</html>
