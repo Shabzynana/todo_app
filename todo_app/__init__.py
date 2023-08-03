@@ -34,11 +34,14 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'users.login'
 
-
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_SSL'] = True
-app.config['TESTING'] = False
+app.config['MAIL_SERVER']='sandbox.smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+# app.config['MAIL_PORT'] = 465
+# app.config['MAIL_USE_SSL'] = True
+# app.config['TESTING'] = False
 app.config['MAIL_USERNAME'] = os.environ.get("USER_DB")
 app.config['MAIL_PASSWORD'] = os.environ.get("PASSWORD_DB")
 
