@@ -10,7 +10,7 @@ from flask_moment import Moment
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'mysegcret'
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 
 ########################   ####################
 
