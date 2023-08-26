@@ -110,13 +110,23 @@
                     {% if todos.page == todos.pages %}disabled{% endif %}">&raquo;
                  </a>
              </div>
-             <!-- END OF PAGINATION -->
 
-             <!-- PAGE NUMBER -->
-             <p class="text-center mt-8 pg">
-                Showing page {{ todos.page }} of {{ todos.pages }}
-             </p>
+             <!-- END OF PAGINATION -->
+             {% if todos.total <= 0 %}
+                <p class="text-center mt-8 pg">
+                  Showing page {{ todos.pages }} of {{ todos.pages }}
+                </p>
+             {% else %}
+                 <p class="text-center mt-8 pg">
+
+                    Showing page {{ todos.page }} of {{ todos.pages }}
+                 </p>
+             {% endif %}
              <!-- END -->
+
+
+
+
 
             </div>
             <!-- END OF FOOTER -->

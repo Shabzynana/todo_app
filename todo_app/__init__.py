@@ -6,11 +6,21 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_bcrypt import Bcrypt
 from flask_moment import Moment
+from dotenv import load_dotenv
+
+
+
 
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+
+# Load the stored environment variables
+load_dotenv()
+
+
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+
 
 ########################   ####################
 
@@ -19,9 +29,10 @@ app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 ##########################################
 # basedir = os.path.abspath(os.path.dirname(__file__))
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
-
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 db = SQLAlchemy(app)
 Migrate(app,db)
@@ -34,6 +45,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'users.login'
 
+
+
 app.config['MAIL_SERVER']='sandbox.smtp.mailtrap.io'
 app.config['MAIL_PORT'] = 2525
 app.config['MAIL_USE_TLS'] = True
@@ -42,8 +55,8 @@ app.config['MAIL_USE_SSL'] = False
 # app.config['MAIL_PORT'] = 465
 # app.config['MAIL_USE_SSL'] = True
 # app.config['TESTING'] = False
-app.config['MAIL_USERNAME'] = os.environ.get("USER_DB")
-app.config['MAIL_PASSWORD'] = os.environ.get("PASSWORD_DB")
+app.config['MAIL_USERNAME'] = os.getenv("USER_MAIL")
+app.config['MAIL_PASSWORD'] = os.getenv("PASSWORD_MAIL")
 
 
 mail = Mail(app)
