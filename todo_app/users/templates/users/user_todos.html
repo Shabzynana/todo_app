@@ -117,9 +117,16 @@
 
             <!-- END OF PAGINATION FOR USERS -->
 
-            <p class="text-center mt-8">
-               Showing page {{ todos.page }} of {{ todos.pages }}
-            </p>
+            {% if todos.total <= 0 %}
+               <p class="text-center mt-8 pg">
+                 Showing page {{ todos.pages }} of {{ todos.pages }}
+               </p>
+            {% else %}
+                <p class="text-center mt-8 pg">
+
+                   Showing page {{ todos.page }} of {{ todos.pages }}
+                </p>
+            {% endif %}
 
     </div>
 
