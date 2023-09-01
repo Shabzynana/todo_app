@@ -1,13 +1,35 @@
 from flask import url_for, render_template
 from flask_mail import Message
+from flask_login import current_user
+
 
 from todo_app import mail
-from todo_app.users.token import get_token, verify_token
+from todo_app.users.token import get_token
 
-def send_reset_email(user):
+def send_email(user):
+    token = get_token(user)
+    msg = Message('Email',
+                  sender='noreply@demo.com',
+                  recipients=[user.email])
+    msg.html = render_template('activate_email.html', token=token, _external=True)
+    mail.send(msg)
+
+
+
+def resend_email(current_user):
+    token = get_token(current_user)
+    msg = Message('Email',
+                  sender='noreply@demo.com',
+                  recipients=[current_user.email])
+    msg.html = render_template('activate_email.html', token=token, _external=True)
+    mail.send(msg)
+
+
+
+def send_reset_password(user):
     token = get_token(user)
     msg = Message('Password Reset Request',
                   sender='noreply@demo.com',
                   recipients=[user.email])
-    msg.html = render_template('activate.html', token=token, _external=True)
+    msg.html = render_template('password_reset.html', token=token, _external=True)
     mail.send(msg)

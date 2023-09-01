@@ -18,3 +18,14 @@ def save_picture(form_picture):
     i.save(picture_path)
 
     return picture_fn
+
+    
+
+def check_confirmed(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        if current_user.confirmed is False:
+            return redirect(url_for('users.unconfirmed'))
+        return func(*args, **kwargs)
+
+    return decorated_function

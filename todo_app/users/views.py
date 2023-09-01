@@ -3,10 +3,11 @@ from flask_login import login_user, current_user, logout_user, login_required
 from todo_app import db, app, bcrypt
 from todo_app.models import User, Todo
 from todo_app.users.forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm, Change_DpForm, UpdateUserForm
-from todo_app.users.token import get_token, verify_token
-from todo_app.users.email import send_reset_email
+from todo_app.users.token import verify_token
+from todo_app.users.email import send_reset_password, send_email, resend_email
 from todo_app.users.picture import save_picture
 
+import datetime
 
 users = Blueprint('users',__name__,template_folder='templates/users')
 
@@ -19,15 +20,20 @@ def register():
     if form.validate_on_submit():
 
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(email=form.email.data,username=form.username.data,first_name=form.first_name.data,last_name=form.last_name.data,gender=form.gender.data,password=hashed_password)
+        user = User(email=form.email.data,username=form.username.data,first_name=form.first_name.data,last_name=form.last_name.data,gender=form.gender.data,password=hashed_password,confirmed=False)
 
         db.session.add(user)
         db.session.commit()
 
+        user = User.query.filter_by(email=form.email.data).first()
+        send_email(user)
         flash('Registration Completed', 'info')
+        flash('An email has been sent with instructions to verify your account.', 'info')
         return redirect(url_for('users.login'))
 
     return render_template('register.html',form=form)
+
+
 
 
 @users.route('/login', methods=['GET','POST'])
@@ -44,8 +50,10 @@ def login():
         elif bcrypt.check_password_hash(user.password, form.password.data) and user is not None:
             login_user(user, remember=form.remember.data)
             flash('Welcome On-board', 'info')
-            return redirect(url_for('users.all_user_todos', username=current_user.username))
-
+            if user.confirmed:
+                return redirect(url_for('users.all_user_todos', username=current_user.username))
+            else:
+                return redirect(url_for('users.unconfirmed'))
 
             next = request.args.get('next')
             if next == None or not next[0]=='/':
@@ -53,6 +61,8 @@ def login():
             return redirect(next)
 
         elif bcrypt.check_password_hash(user.password, form.password.data) is None or user is not None:
+        # elif bcrypt.check_password_hash(user.password, form.password.data) is None:
+
             flash('Incorrect password', 'danger')
 
         else:
@@ -61,10 +71,55 @@ def login():
     return render_template('login.html',form=form)
 
 
+
+
+
 @users.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for("core.index"))
+
+
+
+@users.route('/email_confirmation/resend')
+def resend():
+
+    resend_email(current_user)
+    flash('A new confirmation mail has been sent with instructions to verify your account.', 'info')
+    return redirect(url_for('users.unconfirmed'))
+
+
+
+@users.route('/unconfirmed')
+@login_required
+def unconfirmed():
+    if current_user.confirmed:
+        return redirect('core.index')
+    flash('Please confirm your account!', 'warning')
+    return render_template('unconfirmed.html')
+
+
+
+@users.route('/confirm/<token>')
+# @login_required
+def confirm_email(token):
+
+    tok = verify_token(token)
+    if tok is None:
+        flash('That is an invalid or expired token', 'danger')
+        return redirect(url_for('users.login'))
+    user = User.query.filter_by(id=tok.id).first_or_404()
+    if user.confirmed:
+        flash(f"Account already confirmed : {user.username}", 'success')
+        return redirect(url_for('core.index'))
+    else:
+        user.confirmed = True
+        user.confirmed_on = datetime.datetime.now()
+        db.session.add(user)
+        db.session.commit()
+        flash(f"You have confirmed your account. Thanks {user.username}", 'success')
+    return redirect(url_for('core.index'))
+
 
 
 #send_reset_email
@@ -74,7 +129,7 @@ def reset_request():
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        send_reset_email(user)
+        send_reset_password(user)
         flash('An email has been sent with instructions to reset your password.', 'info')
         return redirect(url_for('users.login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
