@@ -50,10 +50,10 @@ def login():
         elif bcrypt.check_password_hash(user.password, form.password.data) and user is not None:
             login_user(user, remember=form.remember.data)
             flash('Welcome On-board', 'info')
-            if user.confirmed:
-                return redirect(url_for('users.all_user_todos', username=current_user.username))
-            else:
-                return redirect(url_for('users.unconfirmed'))
+            # if user.confirmed:
+            #     return redirect(url_for('users.all_user_todos', username=current_user.username))
+            # else:
+            #     return redirect(url_for('users.unconfirmed'))
 
             next = request.args.get('next')
             if next == None or not next[0]=='/':
@@ -62,7 +62,6 @@ def login():
 
         elif bcrypt.check_password_hash(user.password, form.password.data) is None or user is not None:
         # elif bcrypt.check_password_hash(user.password, form.password.data) is None:
-
             flash('Incorrect password', 'danger')
 
         else:
