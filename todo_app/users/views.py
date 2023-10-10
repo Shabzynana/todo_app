@@ -5,7 +5,7 @@ from todo_app.models import User, Todo
 from todo_app.users.forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm, Change_DpForm, UpdateUserForm
 from todo_app.users.token import verify_token
 from todo_app.users.email import send_reset_password, send_email, resend_email
-from todo_app.users.picture import save_picture
+from todo_app.users.picture import save_picture, check_confirmed, user_check
 
 import datetime
 
@@ -101,13 +101,12 @@ def unconfirmed():
 
 
 @users.route('/confirm/<token>')
-# @login_required
 def confirm_email(token):
 
     tok = verify_token(token)
     if tok is None:
-        flash('That is an invalid or expired token', 'danger')
-        return redirect(url_for('users.login'))
+        flash('That is an invalid or expired link', 'danger')
+        return redirect(url_for('core.index'))
     user = User.query.filter_by(id=tok.id).first_or_404()
     if user.confirmed:
         flash(f"Account already confirmed : {user.username}", 'success')
@@ -135,12 +134,13 @@ def reset_request():
     return render_template('reset_request.html', title='Reset Password', form=form)
 
 
+
 @users.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
 
     user = verify_token(token)
     if user is None:
-        flash('That is an invalid or expired token', 'warning')
+        flash('That is an invalid or expired link', 'warning')
         return redirect(url_for('users.reset_request'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
@@ -174,6 +174,8 @@ def user_todos(username):
 
 
 @users.route("/todo/<username>", methods=['GET','POST'])
+@login_required
+@user_check
 def all_user_todos(username):
 
     user = User.query.filter_by(username=username).first_or_404()

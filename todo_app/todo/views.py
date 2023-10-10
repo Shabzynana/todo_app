@@ -1,9 +1,12 @@
 import datetime
 from flask import render_template,url_for,flash,request,redirect,Blueprint,abort
 from flask_login import current_user,login_required
+
 from todo_app import db
 from todo_app.models import User, Todo
 from todo_app.todo.forms import TodoForm
+from todo_app.users.picture import check_confirmed
+
 
 todos = Blueprint('todos',__name__,template_folder='templates/todo')
 
@@ -24,19 +27,31 @@ def create_todo():
 
     return render_template('create_todo.html',form=form)
 
+
 @todos.route('/todo/<int:todo_id>')
 @login_required
+@check_confirmed
 def todo(todo_id):
-    todos = Todo.query.get_or_404(todo_id)
+
+    # todos = Todo.query.get_or_404(todo_id)
+    todos = Todo.query.get(todo_id)
+    if todos is None:
+        flash(f"No Task with that id", 'info')
+        return redirect(url_for("core.index"))
     return render_template('todo.html',todos=todos)
+
+
 
 @todos.route("/<int:todo_iid>/update_todo", methods=['GET', 'POST'])
 @login_required
+@check_confirmed
 def update_todo(todo_iid):
     todo = Todo.query.get_or_404(todo_iid)
     if todo.author != current_user:
         # Forbidden, No Access
-        abort(403)
+        # abort(403)
+        flash('Not authorized', 'danger')
+        return redirect(url_for('users.all_user_todos', username=current_user.username))
 
     form = TodoForm()
     if form.validate_on_submit():
@@ -55,10 +70,13 @@ def update_todo(todo_iid):
 
 @todos.route("/<int:todo_id>/delete", methods=['POST'])
 @login_required
+@check_confirmed
 def delete_todo(todo_id):
     todo = Todo.query.get_or_404(todo_id)
     if todo.author != current_user:
-        abort(403)
+        # abort(403)
+        flash('Not authorized', 'danger')
+        return redirect(url_for('users.all_user_todos', username=current_user.username))
     db.session.delete(todo)
     db.session.commit()
     flash('Task has been deleted', 'danger')
