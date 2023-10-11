@@ -1,4 +1,4 @@
-from todo_app import db,app,login_manager
+from todo_app import db,login_manager
 from flask_login import UserMixin
 import datetime
 # from datetime import datetime

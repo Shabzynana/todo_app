@@ -1,6 +1,5 @@
 import os
 import secrets
-from todo_app import app
 from PIL import Image
 from flask import url_for,flash,current_app,redirect
 from flask_login import current_user

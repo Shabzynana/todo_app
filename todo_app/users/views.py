@@ -1,6 +1,6 @@
 from flask import render_template,url_for,flash,redirect,request,Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
-from todo_app import db, app, bcrypt
+from todo_app import db, bcrypt
 from todo_app.models import User, Todo
 from todo_app.users.forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm, Change_DpForm, UpdateUserForm
 from todo_app.users.token import verify_token
