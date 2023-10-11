@@ -7,8 +7,6 @@ from flask_mail import Mail
 from flask_bcrypt import Bcrypt
 from todo_app.config import App_Config
 
-from dotenv import load_dotenv
-
 
 db = SQLAlchemy()
 
