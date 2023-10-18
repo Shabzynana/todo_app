@@ -19,6 +19,9 @@ class App_Config:
     SQLALCHEMY_ECHO = False
     
 
+
+    
+
     ## MAIL CONFIG
     MAIL_SERVER = 'sandbox.smtp.mailtrap.io'
     MAIL_PORT = 2525
