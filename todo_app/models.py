@@ -1,14 +1,15 @@
-from todo_app import db,login_manager
+from todo_app import db
 from flask_login import UserMixin
 import datetime
-# from datetime import datetime
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(user_id)
+# from datetime import datetime# ,login_manager
 
 
-class User(db.Model,UserMixin):
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return User.query.get(user_id)
+
+
+class User(db.Model):
 
     __tablename__ = 'users'
 

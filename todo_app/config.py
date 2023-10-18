@@ -17,10 +17,6 @@ class App_Config:
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
-    
-
-
-    
 
     ## MAIL CONFIG
     MAIL_SERVER = 'sandbox.smtp.mailtrap.io'

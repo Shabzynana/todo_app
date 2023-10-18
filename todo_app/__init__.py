@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager
+# from flask_login import LoginManager
 from flask_mail import Mail
 from flask_bcrypt import Bcrypt
 from todo_app.config import App_Config
@@ -12,7 +12,7 @@ db = SQLAlchemy()
 
 bcrypt = Bcrypt()
 
-login_manager = LoginManager()
+# login_manager = LoginManager()
 
 mail = Mail()
 
@@ -35,8 +35,8 @@ def create_app():
     db.init_app(app)
 
     # Initialize login manager
-    login_manager.init_app(app)
-    login_manager.login_view = 'users.login' 
+    # login_manager.init_app(app)
+    # login_manager.login_view = 'users.login' 
 
     # Initialize Bcrypt
     bcrypt.init_app(app)
