@@ -5,7 +5,7 @@ from flask_login import current_user,login_required
 from todo_app import db
 from todo_app.models import User, Todo
 from todo_app.todo.forms import TodoForm
-from todo_app.users.picture import check_confirmed
+# from todo_app.users.picture import check_confirmed
 
 
 todos = Blueprint('todos',__name__,template_folder='templates/todo')
@@ -30,7 +30,7 @@ def create_todo():
 
 @todos.route('/todo/<int:todo_id>')
 @login_required
-@check_confirmed
+# @check_confirmed
 def todo(todo_id):
 
     # todos = Todo.query.get_or_404(todo_id)
@@ -44,7 +44,7 @@ def todo(todo_id):
 
 @todos.route("/<int:todo_iid>/update_todo", methods=['GET', 'POST'])
 @login_required
-@check_confirmed
+# @check_confirmed
 def update_todo(todo_iid):
     todo = Todo.query.get_or_404(todo_iid)
     if todo.author != current_user:
@@ -70,7 +70,7 @@ def update_todo(todo_iid):
 
 @todos.route("/<int:todo_id>/delete", methods=['POST'])
 @login_required
-@check_confirmed
+# @check_confirmed
 def delete_todo(todo_id):
     todo = Todo.query.get_or_404(todo_id)
     if todo.author != current_user:

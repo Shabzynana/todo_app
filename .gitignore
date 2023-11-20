@@ -4,3 +4,4 @@ __init__.pyc
 .env
 test.db
 ven
+flask_session

@@ -2,6 +2,7 @@
 summary
 """
 import os
+import datetime
 from dotenv import load_dotenv
 
 
@@ -17,6 +18,15 @@ class App_Config:
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
+
+
+    # SESSION CONFIG
+    SESSION_TYPE = "filesystem" if not os.getenv("PROD", None) else "sqlalchemy"
+    SESSION_USE_SIGNER = True
+    SESSION_COOKIE_SECURE = False
+    SESSION_COOKIE_SAMESITE = "None"
+    SESSION_COOKIE_HTTPONLY = False
+    PERMANENT_SESSION_LIFETIME = datetime.timedelta(days=30)
 
     ## MAIL CONFIG
     MAIL_SERVER = 'sandbox.smtp.mailtrap.io'

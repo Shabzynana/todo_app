@@ -31,7 +31,6 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
 
-              {% if current_user.is_authenticated and current_user.confirmed %}
 
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -39,7 +38,6 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" href="{{ url_for('todos.create_todo') }}">Add Task</a>
-                  <a class="dropdown-item" href="{{ url_for('users.all_user_todos', username=current_user.username) }}">Tasks</a>
                 </div>
               </li>
               <li class="nav-item dropdown">
@@ -47,7 +45,6 @@
                   Account
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="{{ url_for('users.user_todos', username=current_user.username) }}">Profile</a>
                   <a class="dropdown-item" href="{{ url_for('users.account') }}">Edit Profile</a>
                 </div>
               </li>
@@ -55,14 +52,11 @@
 
 
 
-              {% elif current_user.is_authenticated %}
                 <a class="nav-item nav-link" href="{{ url_for('users.unconfirmed') }}">Confirm</a>
                 <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
 
-              {% else %}
               <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Loginsssssss</a>
               <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
-              {% endif %}
 
             </div>
 

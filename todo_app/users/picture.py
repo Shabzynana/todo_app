@@ -1,7 +1,7 @@
 import os
 import secrets
 from PIL import Image
-from flask import url_for,flash,current_app,redirect
+from flask import url_for, flash, current_app, redirect, session
 from flask_login import current_user
 from functools import wraps
 
@@ -23,14 +23,14 @@ def save_picture(form_picture):
 
 
 
-def check_confirmed(func):
-    @wraps(func)
-    def decorated_function(*args, **kwargs):
-        if current_user.confirmed is False:
-            return redirect(url_for('users.unconfirmed'))
-        return func(*args, **kwargs)
+# def check_confirmed(func):
+#     @wraps(func)
+#     def decorated_function(*args, **kwargs):
+#         if current_user.confirmed is False:
+#             return redirect(url_for('users.unconfirmed'))
+#         return func(*args, **kwargs)
 
-    return decorated_function
+#     return decorated_function
 
 
 
@@ -44,3 +44,20 @@ def user_check(func):
         return func(username, *args, **kwargs)
 
     return decorated_function
+
+
+
+def current_use(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+
+        if 'user_id' in session:
+            user_id = session['user_id']
+            user = User.query.get(id=user_id)
+            if user:
+                return (user.id)
+
+        return func(*args, **kwargs)
+
+    return decorated_function
+

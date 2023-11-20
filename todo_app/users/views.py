@@ -1,15 +1,27 @@
-from flask import render_template,url_for,flash,redirect,request,Blueprint
+from flask import render_template,url_for,flash,redirect,request,Blueprint,session
 from flask_login import login_user, current_user, logout_user, login_required
 from todo_app import db, bcrypt
 from todo_app.models import User, Todo
 from todo_app.users.forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm, Change_DpForm, UpdateUserForm
 from todo_app.users.token import verify_token
 from todo_app.users.email import send_reset_password, send_email, resend_email
-from todo_app.users.picture import save_picture, check_confirmed, user_check
+from todo_app.users.picture import save_picture, user_check
 
 import datetime
 
 users = Blueprint('users',__name__,template_folder='templates/users')
+
+
+
+@users.route('/me')
+def home():
+    if 'user_id' in session:
+        user_id = session['user_id']
+        user = User.query.get(id=user_id)
+        if user:
+            # return (user.id)
+            return (user.id)
+    return f'Hello, {user.username} (ID: {user.id})!'
 
 
 @users.route('/register', methods=['GET','POST'])
@@ -48,7 +60,11 @@ def login():
             flash('This is no user with this email. Please check the email or Register!', 'danger')
 
         elif bcrypt.check_password_hash(user.password, form.password.data) and user is not None:
-            login_user(user, remember=form.remember.data)
+            # session["user"] = {"id": user.id}
+            session['user_id'] = user['id']  # Store user's ID in the session
+
+
+            # login_user(user, remember=form.remember.data)
             flash('Welcome On-board', 'info')
             # if user.confirmed:
             #     return redirect(url_for('users.all_user_todos', username=current_user.username))
@@ -75,8 +91,11 @@ def login():
 
 @users.route("/logout")
 def logout():
-    logout_user()
+    session.pop("user", None)
+    flash('M out', 'danger')
+
     return redirect(url_for("core.index"))
+
 
 
 

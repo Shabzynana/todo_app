@@ -1,7 +1,8 @@
 import os
-from flask import Flask
+from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_session import Session
 # from flask_login import LoginManager
 from flask_mail import Mail
 from flask_bcrypt import Bcrypt
@@ -13,6 +14,8 @@ db = SQLAlchemy()
 bcrypt = Bcrypt()
 
 # login_manager = LoginManager()
+
+sess = Session()
 
 mail = Mail()
 
@@ -33,6 +36,9 @@ def create_app():
 
     # Initialize SQLAlchemy
     db.init_app(app)
+
+    # initialise seesion
+    sess.init_app(app)
 
     # Initialize login manager
     # login_manager.init_app(app)
