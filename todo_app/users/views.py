@@ -15,13 +15,20 @@ users = Blueprint('users',__name__,template_folder='templates/users')
 
 @users.route('/me')
 def home():
-    if 'user_id' in session:
-        user_id = session['user_id']
-        user = User.query.get(id=user_id)
-        if user:
-            # return (user.id)
-            return (user.id)
-    return f'Hello, {user.username} (ID: {user.id})!'
+    # if 'username' in session:
+    #     print("Currents user's ID is %s" % session['id'])
+    # if 'user_id' in session:
+    #     # user_id = session['user_id']
+    #     user = User.query.get(id=user_id)
+    #     if user:
+    #         print (user.id)
+    #         # return (user.id)
+    # return f'Hello, {user.username} (ID: {user.id})!'
+    if not session.get("id"):
+        # print(f'{id}')
+        print(id)
+
+    return ("settos")
 
 
 @users.route('/register', methods=['GET','POST'])
@@ -40,7 +47,7 @@ def register():
         user = User.query.filter_by(email=form.email.data).first()
         send_email(user)
         flash('Registration Completed', 'info')
-        flash('An email has been sent with instructions to verify your account.', 'info')
+        # flash('An email has been sent with instructions to verify your account.', 'info')
         return redirect(url_for('users.login'))
 
     return render_template('register.html',form=form)
@@ -57,20 +64,19 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
 
         if user is None:
+            print("no user")
             flash('This is no user with this email. Please check the email or Register!', 'danger')
+
 
         elif bcrypt.check_password_hash(user.password, form.password.data) and user is not None:
             # session["user"] = {"id": user.id}
-            session['user_id'] = user['id']  # Store user's ID in the session
+            # session['user_id'] = user['id']  # Store user's ID in the session
+            session['logged_in'] = True
+            # session.permanent = True  # Use cookie to store session.
 
-
-            # login_user(user, remember=form.remember.data)
-            flash('Welcome On-board', 'info')
-            # if user.confirmed:
-            #     return redirect(url_for('users.all_user_todos', username=current_user.username))
-            # else:
-            #     return redirect(url_for('users.unconfirmed'))
-
+            print(f"Username of {user.username} and id of {user.id}")
+            flash('You are now logged in.', 'success')
+         
             next = request.args.get('next')
             if next == None or not next[0]=='/':
                 next = url_for('core.index')
@@ -91,8 +97,16 @@ def login():
 
 @users.route("/logout")
 def logout():
-    session.pop("user", None)
-    flash('M out', 'danger')
+    # session.pop("user", None)
+    # flash('M out', 'danger')
+
+    # session.pop('username', None)
+
+
+    # if request.method == 'POST':
+    session.clear()
+    # return redirect(url_for('users.login'))
+    # return render_template('logout.html')
 
     return redirect(url_for("core.index"))
 

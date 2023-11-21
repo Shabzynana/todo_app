@@ -22,11 +22,11 @@ class App_Config:
 
     # SESSION CONFIG
     SESSION_TYPE = "filesystem" if not os.getenv("PROD", None) else "sqlalchemy"
-    SESSION_USE_SIGNER = True
-    SESSION_COOKIE_SECURE = False
-    SESSION_COOKIE_SAMESITE = "None"
-    SESSION_COOKIE_HTTPONLY = False
-    PERMANENT_SESSION_LIFETIME = datetime.timedelta(days=30)
+    # SESSION_USE_SIGNER = True
+    # SESSION_COOKIE_SECURE = False
+    # SESSION_COOKIE_SAMESITE = "None"
+    # SESSION_COOKIE_HTTPONLY = False
+    # PERMANENT_SESSION_LIFETIME = datetime.timedelta(days=30)
 
     ## MAIL CONFIG
     MAIL_SERVER = 'sandbox.smtp.mailtrap.io'

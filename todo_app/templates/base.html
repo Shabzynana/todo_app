@@ -31,32 +31,18 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
 
+              {% if session.logged_in %}
 
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Todo
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="{{ url_for('todos.create_todo') }}">Add Task</a>
-                </div>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Account
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="{{ url_for('users.account') }}">Edit Profile</a>
-                </div>
-              </li>
+              <li><a href="#ss">Drafts</a></li>
+              <li><a href="#">Create Entry</a></li>
               <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
-
-
-
-                <a class="nav-item nav-link" href="{{ url_for('users.unconfirmed') }}">Confirm</a>
-                <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+              {% else %}
 
               <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Loginsssssss</a>
               <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+
+              {% endif %}
+
 
             </div>
 

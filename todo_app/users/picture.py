@@ -61,3 +61,11 @@ def current_use(func):
 
     return decorated_function
 
+def login_required(fn):
+    @wraps(fn)
+    def inner(*args, **kwargs):
+        if session.get('logged_in'):
+            return fn(*args, **kwargs)
+        return redirect(url_for('users.login'))
+    return inner
+
