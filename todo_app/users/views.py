@@ -30,9 +30,9 @@ def home():
 
     # return ("natty")   
 
-    user_id = session["user_id"]
-    print(user_id)
-    return user_id
+    # user_id = session["user_id"]["id"]
+    # print(user_id)
+    # return ("ssamsmsmsssjsjj")
 
      
 
@@ -44,13 +44,18 @@ def home():
 
     # if 'username' in session:
     #     print("Currents user's ID is %s" % session['id'])
-    # if 'user_id' in session:
-    #     # user_id = session['user_id']
-    #     user = User.query.get(id=user_id)
-    #     if user:
-    #         print (user.id)
-    #         # return (user.id)
-    # return f'Hello, {user.username} (ID: {user.id})!'
+    if 'user_id' in session:
+        # print (session['user_id'])
+        idd = session['user_id']['id']
+        print (idd)
+        user = User.query.filter_by(id=idd).first()
+        print (f"user: {user.username}")
+        print (f"user: {user}")
+
+        if user:
+            print (user)
+            # return (user.id)
+    return (f'Hello, {user.username} (ID: {user.id})!')
     # if not session.get("id"):
         # print(f'{id}')
         # print(id)
