@@ -15,6 +15,33 @@ users = Blueprint('users',__name__,template_folder='templates/users')
 
 @users.route('/me')
 def home():
+
+    # if session.get('logged_in'):
+    #     user= User.query.get(id)
+    #     sam = User.query.filter_by(id=user).first()
+    #     print(f'id, {sam.id}')
+    # else:
+    #     print("id not")    
+    # return ('user')   
+    # 
+    # if 'username' in session:
+    #     username = session['username'] 
+    #     print (f"{username}")
+
+    # return ("natty")   
+
+    user_id = session["user_id"]
+    print(user_id)
+    return user_id
+
+     
+
+
+
+
+
+
+
     # if 'username' in session:
     #     print("Currents user's ID is %s" % session['id'])
     # if 'user_id' in session:
@@ -24,11 +51,11 @@ def home():
     #         print (user.id)
     #         # return (user.id)
     # return f'Hello, {user.username} (ID: {user.id})!'
-    if not session.get("id"):
+    # if not session.get("id"):
         # print(f'{id}')
-        print(id)
+        # print(id)
 
-    return ("settos")
+    # return ("settos")
 
 
 @users.route('/register', methods=['GET','POST'])
@@ -61,6 +88,8 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
 
+        # session['username'] = request.form['username']
+
         user = User.query.filter_by(email=form.email.data).first()
 
         if user is None:
@@ -69,9 +98,12 @@ def login():
 
 
         elif bcrypt.check_password_hash(user.password, form.password.data) and user is not None:
-            # session["user"] = {"id": user.id}
             # session['user_id'] = user['id']  # Store user's ID in the session
+
             session['logged_in'] = True
+            session["user_id"] = {"id": user.id}
+
+
             # session.permanent = True  # Use cookie to store session.
 
             print(f"Username of {user.username} and id of {user.id}")
