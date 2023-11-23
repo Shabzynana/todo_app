@@ -1,11 +1,11 @@
 from flask import render_template,url_for,flash,redirect,request,Blueprint,session
-from flask_login import login_user, current_user, logout_user, login_required
+# from flask_login import login_user, current_user, logout_user, login_required
 from todo_app import db, bcrypt
 from todo_app.models import User, Todo
 from todo_app.users.forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm, Change_DpForm, UpdateUserForm
 from todo_app.users.token import verify_token
 from todo_app.users.email import send_reset_password, send_email, resend_email
-from todo_app.users.picture import save_picture, user_check
+from todo_app.users.picture import save_picture, current_user_id, login_required
 
 import datetime
 
@@ -16,50 +16,9 @@ users = Blueprint('users',__name__,template_folder='templates/users')
 @users.route('/me')
 def home():
 
-    # if session.get('logged_in'):
-    #     user= User.query.get(id)
-    #     sam = User.query.filter_by(id=user).first()
-    #     print(f'id, {sam.id}')
-    # else:
-    #     print("id not")    
-    # return ('user')   
-    # 
-    # if 'username' in session:
-    #     username = session['username'] 
-    #     print (f"{username}")
-
-    # return ("natty")   
-
-    # user_id = session["user_id"]["id"]
-    # print(user_id)
-    # return ("ssamsmsmsssjsjj")
-
-     
-
-
-
-
-
-
-
-    # if 'username' in session:
-    #     print("Currents user's ID is %s" % session['id'])
-    if 'user_id' in session:
-        # print (session['user_id'])
-        idd = session['user_id']['id']
-        print (idd)
-        user = User.query.filter_by(id=idd).first()
-        print (f"user: {user.username}")
-        print (f"user: {user}")
-
-        if user:
-            print (user)
-            # return (user.id)
-    return (f'Hello, {user.username} (ID: {user.id})!')
-    # if not session.get("id"):
-        # print(f'{id}')
-        # print(id)
-
+    sam = current_user_id().email
+    print(sam)
+    return (f'Hello, {sam.username} (ID: {sam.id})!')
     # return ("settos")
 
 
@@ -107,11 +66,11 @@ def login():
 
             session['logged_in'] = True
             session["user_id"] = {"id": user.id}
+            session["userername"] = {"username": user.username}
 
 
             # session.permanent = True  # Use cookie to store session.
 
-            print(f"Username of {user.username} and id of {user.id}")
             flash('You are now logged in.', 'success')
          
             next = request.args.get('next')
@@ -134,16 +93,13 @@ def login():
 
 @users.route("/logout")
 def logout():
-    # session.pop("user", None)
+  
+    # session.pop('logged_in', None)
+    # session.pop('username', None)
     # flash('M out', 'danger')
 
-    # session.pop('username', None)
-
-
-    # if request.method == 'POST':
     session.clear()
-    # return redirect(url_for('users.login'))
-    # return render_template('logout.html')
+    flash('M out', 'info')
 
     return redirect(url_for("core.index"))
 
@@ -244,7 +200,7 @@ def user_todos(username):
 
 @users.route("/todo/<username>", methods=['GET','POST'])
 @login_required
-@user_check
+# @user_check
 def all_user_todos(username):
 
     user = User.query.filter_by(username=username).first_or_404()

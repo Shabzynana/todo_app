@@ -1,11 +1,11 @@
 import datetime
 from flask import render_template,url_for,flash,request,redirect,Blueprint,abort
-from flask_login import current_user,login_required
+# from flask_login import current_user,login_required
 
 from todo_app import db
 from todo_app.models import User, Todo
 from todo_app.todo.forms import TodoForm
-# from todo_app.users.picture import check_confirmed
+from todo_app.users.picture import current_user_id, login_required
 
 
 todos = Blueprint('todos',__name__,template_folder='templates/todo')
@@ -19,11 +19,11 @@ def create_todo():
 
     if form.validate_on_submit():
 
-        todo = Todo(text=form.text.data,date=form.date.data,user_id=current_user.username)
+        todo = Todo(text=form.text.data,date=form.date.data,user_id=current_user_id().username)
         db.session.add(todo)
         db.session.commit()
         flash('Task Created!', 'info')
-        return redirect(url_for('users.all_user_todos', username=current_user.username))
+        return redirect(url_for('users.all_user_todos', username=current_user_id().username))
 
     return render_template('create_todo.html',form=form)
 

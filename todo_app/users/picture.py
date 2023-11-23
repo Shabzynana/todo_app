@@ -2,10 +2,19 @@ import os
 import secrets
 from PIL import Image
 from flask import url_for, flash, current_app, redirect, session
-from flask_login import current_user
+# from flask_login import current_user
 from functools import wraps
 
 from todo_app.models import User
+
+def current_user_id():
+    if 'user_id' in session:
+        # print (session['user_id'])
+        idd = session['user_id']['id']
+        # print (idd)
+        user = User.query.filter_by(id=idd).first()
+        if user:
+            return user
 
 
 def save_picture(form_picture):
@@ -22,6 +31,9 @@ def save_picture(form_picture):
     return picture_fn
 
 
+  
+
+
 
 # def check_confirmed(func):
 #     @wraps(func)
@@ -34,39 +46,23 @@ def save_picture(form_picture):
 
 
 
-def user_check(func):
+# def user_check(func):
+#     @wraps(func)
+#     def decorated_function(username, *args, **kwargs):
+#         user = User.query.filter_by(username=username).first()
+#         if current_user != user:
+#             flash('User not authorized', 'danger')
+#             return redirect(url_for('users.all_user_todos', username=current_user.username))
+#         return func(username, *args, **kwargs)
+
+#     return decorated_function
+
+
+def login_required(func):
     @wraps(func)
-    def decorated_function(username, *args, **kwargs):
-        user = User.query.filter_by(username=username).first()
-        if current_user != user:
-            flash('User not authorized', 'danger')
-            return redirect(url_for('users.all_user_todos', username=current_user.username))
-        return func(username, *args, **kwargs)
-
-    return decorated_function
-
-
-
-def current_use(func):
-    @wraps(func)
-    def decorated_function(*args, **kwargs):
-
-        if 'user_id' in session:
-            user_id = session['user_id']
-            user = User.query.get(id=user_id)
-            if user:
-                return (user.id)
-
-        return func(*args, **kwargs)
-
-    return decorated_function
-
-
-def login_required(fn):
-    @wraps(fn)
     def inner(*args, **kwargs):
         if session.get('logged_in'):
-            return fn(*args, **kwargs)
+            return func(*args, **kwargs)
         return redirect(url_for('users.login'))
     return inner
 
