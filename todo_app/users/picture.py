@@ -9,9 +9,7 @@ from todo_app.models import User
 
 def current_user_id():
     if 'user_id' in session:
-        # print (session['user_id'])
         idd = session['user_id']['id']
-        # print (idd)
         user = User.query.filter_by(id=idd).first()
         if user:
             return user
