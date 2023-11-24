@@ -15,6 +15,7 @@ def current_user_id():
         user = User.query.filter_by(id=idd).first()
         if user:
             return user
+    return None       
 
 
 def save_picture(form_picture):
