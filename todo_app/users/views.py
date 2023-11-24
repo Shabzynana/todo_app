@@ -67,7 +67,7 @@ def login():
             session['logged_in'] = True
             session["user_id"] = {"id": user.id}
             session["username"] = {"username" : user.username}
-            session["confirmed"] = user.confirmed
+            session["confirmed"] = {"confirmed" : user.confirmed}
 
             # session["username"] = {"username": user.username}
 
