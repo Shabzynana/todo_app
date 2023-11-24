@@ -65,9 +65,14 @@ def login():
             # session['user_id'] = user['id']  # Store user's ID in the session
 
             session['logged_in'] = True
+
             session["user_id"] = {"id": user.id}
+            session["email"] = {"email": user.email}
             session["username"] = {"username" : user.username}
             session["confirmed"] = {"confirmed" : user.confirmed}
+            session["dp"] = {"dp" : user.profile_image}
+
+
 
             # session["username"] = {"username": user.username}
 
@@ -114,7 +119,7 @@ def logout():
 @users.route('/email_confirmation/resend')
 def resend():
 
-    resend_email(current_user)
+    resend_email(current_user_id())
     flash('A new confirmation mail has been sent with instructions to verify your account.', 'info')
     return redirect(url_for('users.unconfirmed'))
 
@@ -192,10 +197,10 @@ def user_todos(username):
 
         if form.picture.data:
             pic = save_picture(form.picture.data)
-            current_user.profile_image = pic
+            current_user_id().profile_image = pic
         db.session.commit()
         flash('Profile Image Updated!', 'info')
-        return redirect(url_for('users.user_todos', username=current_user.username))
+        return redirect(url_for('users.user_todos', username=current_user_id().username))
 
     ROWS_PER_PAGE = 4
     page = request.args.get('page',1,type=int)
@@ -223,16 +228,16 @@ def account():
 
     if form.validate_on_submit():
 
-        current_user.username = form.username.data
-        current_user.first_name = form.first_name.data
-        current_user.last_name = form.last_name.data
+        current_user_id().username = form.username.data
+        current_user_id().first_name = form.first_name.data
+        current_user_id().last_name = form.last_name.data
         db.session.commit()
         flash('User Account Updated!', 'info')
-        return redirect(url_for('users.user_todos', username=current_user.username))
+        return redirect(url_for('users.user_todos', username=current_user_id().username))
 
     elif request.method == 'GET':
-        form.first_name.data = current_user.first_name
-        form.last_name.data = current_user.last_name
-        form.username.data = current_user.username
+        form.first_name.data = current_user_id().first_name
+        form.last_name.data = current_user_id().last_name
+        form.username.data = current_user_id().username
 
     return render_template('account.html',form=form)

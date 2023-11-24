@@ -17,3 +17,4 @@
 #             return (user)
 #     print('good')
 
+          <!-- <h1>Welcome to the page for {{current_user.username}}</h1> -->

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from flask_login import current_user
+# from flask_login import current_user
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, RadioField
 from wtforms.fields.html5 import DateField, EmailField, TelField
 from wtforms.validators import DataRequired, Email, EqualTo, InputRequired
@@ -7,6 +7,7 @@ from wtforms import ValidationError
 from flask_wtf.file import FileField,FileAllowed
 
 from todo_app.models import User
+from todo_app.users.picture import current_user_id
 
 class LoginForm(FlaskForm):
 
@@ -66,13 +67,13 @@ class UpdateUserForm(FlaskForm):
     submit = SubmitField('Update')
 
     def validate_username(self, username):
-        if username.data != current_user.username:
+        if username.data != current_user_id().username:
             user = User.query.filter_by(username=username.data).first()
             if user:
                 raise ValidationError('That username is taken. Please choose a different one.')
 
     def validate_email(self, email):
-        if email.data != current_user.email:
+        if email.data != current_user_id().email:
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('That email is taken. Please choose a different one.')
