@@ -66,10 +66,15 @@ def login():
 
             session['logged_in'] = True
             session["user_id"] = {"id": user.id}
-            session["userername"] = {"username": user.username}
+            session["username"] = {"username" : user.username}
+            session["confirmed"] = user.confirmed
+
+            # session["username"] = {"username": user.username}
 
 
             # session.permanent = True  # Use cookie to store session.
+            print(f'login in gee {user.id}')
+            # print(f'login in gee {session.username}')
 
             flash('You are now logged in.', 'success')
          
@@ -118,7 +123,7 @@ def resend():
 @users.route('/unconfirmed')
 @login_required
 def unconfirmed():
-    if current_user.confirmed:
+    if current_user_id().confirmed:
         return redirect('core.index')
     flash('Please confirm your account!', 'warning')
     return render_template('unconfirmed.html')

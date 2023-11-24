@@ -29,22 +29,43 @@
               <a class="nav-item nav-link" href="{{ url_for('core.index') }}">Home</a>
             </div>
             <!-- Navbar Right Side -->
+
             <div class="navbar-nav">
 
-              {% if session.logged_in %}
+              {% if session.logged_in and session.confirmed %}
 
-              <li><a href="#ss">Drafts</a></li>
-              <li><a href="#">Create Entry</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Todo
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{{ url_for('todos.create_todo') }}">Add Task</a>
+                  <a class="dropdown-item" href="{{ url_for('users.all_user_todos', username=session.username.username) }}">Tasks</a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Account
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{{ url_for('users.user_todos', username=session.username.username) }}">Profile</a>
+                  <a class="dropdown-item" href="{{ url_for('users.account') }}">Edit Profile</a>
+                </div>
+              </li>
               <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+
+              {% elif session.logged_in %}
+                <a class="nav-item nav-link" href="{{ url_for('users.unconfirmed') }}">Confirm</a>
+                <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+
               {% else %}
 
-              <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Loginsssssss</a>
+              <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
               <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
-
               {% endif %}
 
+            </div>           
 
-            </div>
 
           </div>
         </nav>

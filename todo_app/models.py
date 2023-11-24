@@ -1,4 +1,5 @@
 from todo_app import db
+from flask import session
 # from flask_login import UserMixin
 import datetime
 # from datetime import datetime# ,login_manager
@@ -40,7 +41,7 @@ class User(db.Model):
 
     def __repr__(self):
         return f" Username {self.username}"
-
+    
 class Todo(db.Model):
 
     __tablename__ = 'todos'

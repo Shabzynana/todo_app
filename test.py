@@ -16,3 +16,26 @@ def current_user_id():
             print (user)
             return (user)
     print('good')
+
+
+
+            <div class="navbar-nav">
+
+              {% if session.logged_in and session.confirmed %}
+
+              <li><a href="#ss">Drafts</a></li>
+              <li><a href="#">Create Entry</a></li>
+              <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+
+              {% elif session.logged_in %}
+              <li><a href="#">Unconfirmed</a></li>
+              <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+
+              {% else %}
+
+              <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+              <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+
+              {% endif %}
+            </div
+

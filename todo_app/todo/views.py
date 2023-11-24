@@ -5,7 +5,7 @@ from flask import render_template,url_for,flash,request,redirect,Blueprint,abort
 from todo_app import db
 from todo_app.models import User, Todo
 from todo_app.todo.forms import TodoForm
-from todo_app.users.picture import current_user_id, login_required
+from todo_app.users.picture import current_user_id, login_required, check_confirmed
 
 
 todos = Blueprint('todos',__name__,template_folder='templates/todo')
@@ -13,6 +13,7 @@ todos = Blueprint('todos',__name__,template_folder='templates/todo')
 
 @todos.route('/create', methods=['GET','POST'])
 @login_required
+@check_confirmed
 def create_todo():
 
     form = TodoForm()
