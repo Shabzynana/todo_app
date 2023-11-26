@@ -39,7 +39,7 @@ def todo(todo_id):
     if todos is None:
         flash(f"No Task with that id", 'info')
         return redirect(url_for("core.index"))
-    return render_template('todo.html',todos=todos)
+    return render_template('todo.html',todos=todos,current_user=current_user_id())
 
 
 
@@ -48,11 +48,11 @@ def todo(todo_id):
 # @check_confirmed
 def update_todo(todo_iid):
     todo = Todo.query.get_or_404(todo_iid)
-    if todo.author != current_user:
+    if todo.author != current_user_id():
         # Forbidden, No Access
         # abort(403)
         flash('Not authorized', 'danger')
-        return redirect(url_for('users.all_user_todos', username=current_user.username))
+        return redirect(url_for('users.all_user_todos', username=current_user_id().username))
 
     form = TodoForm()
     if form.validate_on_submit():
@@ -60,7 +60,7 @@ def update_todo(todo_iid):
         todo.date = form.date.data
         db.session.commit()
         flash('Task Updated', 'info')
-        return redirect(url_for('users.all_user_todos', username=current_user.username))
+        return redirect(url_for('users.all_user_todos', username=current_user_id().username))
     # Pass back the old blog post information so they can start again with
     # the old text and title.
     elif request.method == 'GET':
@@ -74,11 +74,11 @@ def update_todo(todo_iid):
 # @check_confirmed
 def delete_todo(todo_id):
     todo = Todo.query.get_or_404(todo_id)
-    if todo.author != current_user:
+    if todo.author != current_user_id():
         # abort(403)
         flash('Not authorized', 'danger')
-        return redirect(url_for('users.all_user_todos', username=current_user.username))
+        return redirect(url_for('users.all_user_todos', username=current_user_id().username))
     db.session.delete(todo)
     db.session.commit()
     flash('Task has been deleted', 'danger')
-    return redirect(url_for('users.all_user_todos',username=current_user.username))
+    return redirect(url_for('users.all_user_todos',username=current_user_id().username))

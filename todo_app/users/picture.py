@@ -41,7 +41,6 @@ def check_confirmed(func):
     return decorated_function
 
 
-
 # def user_check(func):
 #     @wraps(func)
 #     def decorated_function(username, *args, **kwargs):

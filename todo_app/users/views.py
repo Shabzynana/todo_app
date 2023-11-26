@@ -5,7 +5,7 @@ from todo_app.models import User, Todo
 from todo_app.users.forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm, Change_DpForm, UpdateUserForm
 from todo_app.users.token import verify_token
 from todo_app.users.email import send_reset_password, send_email, resend_email
-from todo_app.users.picture import save_picture, current_user_id, login_required
+from todo_app.users.picture import save_picture, current_user_id, login_required, check_confirmed
 
 import datetime
 
@@ -16,7 +16,7 @@ users = Blueprint('users',__name__,template_folder='templates/users')
 @users.route('/me')
 def home():
 
-    sam = current_user_id().email
+    sam = current_user_id()
     print(sam)
     return (f'Hello, {sam.username} (ID: {sam.id})!')
     # return ("settos")
@@ -222,6 +222,7 @@ def all_user_todos(username):
 
 @users.route('/account', methods=['GET','POST'])
 @login_required
+@check_confirmed
 def account():
 
     form = UpdateUserForm()
