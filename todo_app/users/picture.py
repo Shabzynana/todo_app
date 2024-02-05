@@ -9,11 +9,11 @@ from todo_app.models import User
 
 def current_user_id():
     if 'user_id' in session:
-        idd = session['user_id']['id']
-        user = User.query.filter_by(id=idd).first()
+        id = session['user_id']['id']
+        user = User.query.filter_by(id=id).first()
         if user:
             return user
-    return None       
+    return ("NO USER")       
 
 
 def save_picture(form_picture):

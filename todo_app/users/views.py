@@ -65,21 +65,15 @@ def login():
             # session['user_id'] = user['id']  # Store user's ID in the session
 
             session['logged_in'] = True
-
             session["user_id"] = {"id": user.id}
-            session["email"] = {"email": user.email}
             session["username"] = {"username" : user.username}
             session["confirmed"] = {"confirmed" : user.confirmed}
-            session["dp"] = {"dp" : user.profile_image}
 
-
-
-            # session["username"] = {"username": user.username}
-
+            # session["email"] = {"email": user.email}
+            # session["dp"] = {"dp" : user.profile_image}
 
             # session.permanent = True  # Use cookie to store session.
             print(f'login in gee {user.id}')
-            # print(f'login in gee {session.username}')
 
             flash('You are now logged in.', 'success')
          
@@ -241,4 +235,4 @@ def account():
         form.last_name.data = current_user_id().last_name
         form.username.data = current_user_id().username
 
-    return render_template('account.html',form=form)
+    return render_template('account.html',form=form,current_user=current_user_id())

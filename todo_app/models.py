@@ -1,14 +1,6 @@
 from todo_app import db
-from flask import session
-# from flask_login import UserMixin
+# from flask import session
 import datetime
-# from datetime import datetime# ,login_manager
-
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.query.get(user_id)
-
 
 class User(db.Model):
 
