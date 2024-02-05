@@ -5,3 +5,4 @@ __init__.pyc
 test.db
 ven
 flask_session
+.vscode
