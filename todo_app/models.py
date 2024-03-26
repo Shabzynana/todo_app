@@ -1,8 +1,7 @@
 from todo_app import db
-# from flask import session
 import datetime
 
-class User(db.Model):
+class User(db.Model): # type: ignore
 
     __tablename__ = 'users'
 
@@ -34,7 +33,7 @@ class User(db.Model):
     def __repr__(self):
         return f" Username {self.username}"
     
-class Todo(db.Model):
+class Todo(db.Model):   # type: ignore
 
     __tablename__ = 'todos'
 
@@ -42,6 +41,7 @@ class Todo(db.Model):
     text = db.Column(db.Text,nullable=False)
     date = db.Column(db.Date, nullable=True)
     user_id = db.Column(db.String(64),db.ForeignKey('users.username',onupdate="CASCADE"),nullable=False)
+
 
     def __init__(self,text,user_id,date):
         self.text = text

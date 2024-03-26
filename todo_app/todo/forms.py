@@ -12,5 +12,6 @@ class TodoForm(FlaskForm):
     date = DateField('Date:')
     submit = SubmitField('Post')
 
+
 # , format='%m/%d/%y'
 # {{url_for('todos.update',todo_iid=todos.id)}}

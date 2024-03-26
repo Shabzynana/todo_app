@@ -26,6 +26,7 @@ def create_todo():
         flash('Task Created!', 'info')
         return redirect(url_for('users.all_user_todos', username=current_user_id().username))
 
+
     return render_template('create_todo.html',form=form)
 
 
